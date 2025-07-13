@@ -5,6 +5,7 @@ import xyz.ibudai.authority.common.enums.CacheOperate;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * 系统角色菜单缓存
@@ -26,7 +27,7 @@ public class MenuCache extends BaseCache<Long, String> {
      * @return 菜单权限
      */
     public Set<String> read(Long roleId) {
-        return super.read(roleId, MENU_MAP);
+        return this.read(Set.of(roleId));
     }
 
     /**
@@ -45,8 +46,28 @@ public class MenuCache extends BaseCache<Long, String> {
      * @param roleId 角色ID
      * @param menus  菜单权限
      */
+    public void add(Long roleId, String... menus) {
+        add(roleId, Arrays.stream(menus).collect(Collectors.toSet()));
+    }
+
+    /**
+     * 角色新增权限
+     *
+     * @param roleId 角色ID
+     * @param menus  菜单权限
+     */
     public void add(Long roleId, Set<String> menus) {
         super.compute(MENU_MAP, CacheOperate.ADD, roleId, menus);
+    }
+
+    /**
+     * 角色删除权限
+     *
+     * @param roleId 角色ID
+     * @param menus  菜单权限
+     */
+    public void delete(Long roleId, String... menus) {
+        delete(roleId, Set.of(menus));
     }
 
     /**

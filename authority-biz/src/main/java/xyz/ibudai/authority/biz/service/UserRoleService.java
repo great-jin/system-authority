@@ -3,6 +3,7 @@ package xyz.ibudai.authority.biz.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.ibudai.authority.model.entity.UserRole;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,5 +21,21 @@ public interface UserRoleService extends IService<UserRole> {
      * @return 菜单
      */
     Set<String> getUserMenus(Long userId);
+
+
+    /**
+     * 新增用户角色
+     *
+     * @param list the list
+     */
+    void addUserRole(List<UserRole> list);
+
+    /**
+     * 删除用户角色
+     *
+     * @param list the list
+     */
+    void deleteUserRole(List<UserRole> list);
+
 }
 

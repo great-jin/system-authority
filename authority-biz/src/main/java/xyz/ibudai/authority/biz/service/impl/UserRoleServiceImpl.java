@@ -10,8 +10,7 @@ import xyz.ibudai.authority.common.cache.UserRoleCache;
 import xyz.ibudai.authority.model.entity.UserRole;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +42,63 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
         }
 
         return menuCache.read(roleIds);
+    }
+
+    @Override
+    public void addUserRole(List<UserRole> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+
+        // 查询历史数据
+        Set<String> recordKeys = new HashSet<>();
+        List<UserRole> histories = this.listHistory(list);
+        for (UserRole item : histories) {
+            recordKeys.add(String.valueOf(item.getUserId()) + item.getRoleId());
+        }
+
+        // 过滤保存
+        List<UserRole> addList = new ArrayList<>();
+        for (UserRole item : list) {
+            String key = String.valueOf(item.getUserId()) + item.getRoleId();
+            if (recordKeys.contains(key)) {
+                // 跳过已存在
+                continue;
+            }
+
+            addList.add(item);
+        }
+
+        this.saveBatch(addList);
+        addList.forEach(it -> userRoleCache.add(it.getUserId(), it.getRoleId()));
+    }
+
+    @Override
+    public void deleteUserRole(List<UserRole> list) {
+        for (UserRole item : list) {
+            this.lambdaUpdate()
+                    .eq(UserRole::getUserId, item.getUserId())
+                    .eq(UserRole::getRoleId, item.getRoleId())
+                    .remove();
+            userRoleCache.delete(item.getUserId(), item.getRoleId());
+        }
+    }
+
+
+    /**
+     * 查询历史记录
+     */
+    private List<UserRole> listHistory(List<UserRole> list) {
+        Set<Long> userIds = new HashSet<>();
+        Set<Long> roleIds = new HashSet<>();
+        for (UserRole item : list) {
+            userIds.add(item.getUserId());
+            roleIds.add(item.getRoleId());
+        }
+        return this.lambdaQuery()
+                .in(UserRole::getUserId, userIds)
+                .in(UserRole::getRoleId, roleIds)
+                .list();
     }
 }
 

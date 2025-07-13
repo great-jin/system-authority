@@ -35,8 +35,28 @@ public class UserRoleCache extends BaseCache<Long, Long> {
      * @param userId  用户ID
      * @param roleIds 角色集合
      */
+    public void add(Long userId, Long... roleIds) {
+        this.add(userId, Set.of(roleIds));
+    }
+
+    /**
+     * 用户新增角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色集合
+     */
     public void add(Long userId, Set<Long> roleIds) {
         super.compute(UR_MAP, CacheOperate.ADD, userId, roleIds);
+    }
+
+    /**
+     * 用户删除角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色集合
+     */
+    public void delete(Long userId, Long... roleIds) {
+        this.delete(userId, Set.of(roleIds));
     }
 
     /**

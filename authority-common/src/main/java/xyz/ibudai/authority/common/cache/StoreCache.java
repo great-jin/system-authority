@@ -66,8 +66,28 @@ public class StoreCache extends BaseCache<Long, Long> {
      * @param roleId   角色ID
      * @param storeIds 店铺集合
      */
+    public void add(Long roleId, Long... storeIds) {
+        this.add(roleId, Set.of(storeIds));
+    }
+
+    /**
+     * 角色下新增店铺
+     *
+     * @param roleId   角色ID
+     * @param storeIds 店铺集合
+     */
     public void add(Long roleId, Set<Long> storeIds) {
         super.compute(STORE_MAP, CacheOperate.ADD, roleId, storeIds);
+    }
+
+    /**
+     * 角色下删除店铺
+     *
+     * @param roleId   角色ID
+     * @param storeIds 店铺集合
+     */
+    public void delete(Long roleId, Long... storeIds) {
+        this.delete(roleId, Set.of(storeIds));
     }
 
     /**

@@ -16,6 +16,14 @@ public class ResultData<T> {
     private T data;
 
 
+    public static <T> ResultData<T> success() {
+        ResultData<T> response = new ResultData<>();
+        response.setCode(200);
+        response.setMessage("success");
+        response.setData(null);
+        return response;
+    }
+
     public static <T> ResultData<T> success(T data) {
         ResultData<T> response = new ResultData<>();
         response.setCode(200);

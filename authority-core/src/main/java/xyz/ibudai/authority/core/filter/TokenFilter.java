@@ -2,7 +2,6 @@ package xyz.ibudai.authority.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,7 +65,8 @@ public class TokenFilter extends OncePerRequestFilter {
             Claims claims = jwtUtils.parse(token);
             String content = claims.get("sub").toString();
             user = objectMapper.readValue(content, UserDTO.class);
-        } catch (ExpiredJwtException e) {
+        } catch (Exception e) {
+            log.error("Read jwt error", e);
             this.processNotPermit("Login expired.", response);
             return;
         }
@@ -83,7 +83,6 @@ public class TokenFilter extends OncePerRequestFilter {
     private void processNotPermit(String msg, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(203);
-        ResultData<Void> resultData = new ResultData<>(203, msg, null);
-        response.getWriter().write(objectMapper.writeValueAsString(resultData));
+        response.getWriter().write(objectMapper.writeValueAsString(ResultData.reject(msg)));
     }
 }

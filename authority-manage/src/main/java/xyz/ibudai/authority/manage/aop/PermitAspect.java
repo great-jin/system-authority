@@ -44,7 +44,7 @@ public class PermitAspect {
                     PermitHandler handler = entry.getValue();
                     boolean lackPermit = handler.lackPermit(annotation, arg);
                     if (lackPermit) {
-                        return ResultData.denies("Lack permit of " + handler.name());
+                        return ResultData.denies(String.format("Lack %s permission of %s", handler.name(), arg));
                     }
                 }
             }

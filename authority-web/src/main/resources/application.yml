@@ -23,5 +23,6 @@ token:
   hosts: "*"
   issuer: ibudai
   secret: auth_2025
+  expireMinutes: 30
   whitelist:
     - ${server.servlet.context-path}/api/user/login

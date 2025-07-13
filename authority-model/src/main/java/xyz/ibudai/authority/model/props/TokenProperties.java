@@ -15,6 +15,8 @@ public class TokenProperties {
 
     private String issuer;
 
+    private Integer expireMinutes;
+
     private String[] whitelist;
 
 }

@@ -30,17 +30,17 @@ public class UserResource {
         String username = user.getUsername();
         String password = user.getPassword();
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            return ResultData.failed("username or password is empty");
+            return ResultData.reject("username or password is empty");
         }
         User matchUser = userService.lambdaQuery()
                 .eq(User::getUsername, username)
                 .one();
         if (Objects.isNull(matchUser)) {
-            return ResultData.failed("user not exist");
+            return ResultData.reject("user not exist");
         }
 
         if (!Objects.equals(matchUser.getPassword(), user.getPassword())) {
-            return ResultData.failed("password does not match");
+            return ResultData.reject("password does not match");
         }
 
         // 登录成功

@@ -9,11 +9,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import xyz.ibudai.authority.manage.PermitHandler;
-import xyz.ibudai.authority.manage.annotation.StorePermit;
 import xyz.ibudai.authority.model.base.ResultData;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Objects;
 
 @Aspect
@@ -21,7 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PermitAspect {
 
-    private final PermitHandler storePermitHandler;
+    private final Map<String, PermitHandler> permitHandlerMap;
 
 
     @Pointcut("execution (public * xyz.ibudai.authority.rest.*.*(..))")
@@ -35,26 +35,21 @@ public class PermitAspect {
             return joinPoint.proceed();
         }
 
-        Annotation[][] annotations = method.getParameterAnnotations();
         Object[] args = joinPoint.getArgs();
+        Annotation[][] annotations = method.getParameterAnnotations();
         for (int i = 0; i < annotations.length; i++) {
+            Object arg = args[i];
             for (Annotation annotation : annotations[i]) {
-                if (annotation.annotationType() != StorePermit.class) {
-                    continue;
-                }
-                Object arg = args[i];
-                if (Objects.isNull(arg)) {
-                    continue;
-                }
-
-                Long storeId = Long.valueOf(arg.toString());
-                boolean hasPermit = storePermitHandler.hasPermit(storeId);
-                if (!hasPermit) {
-                    return ResultData.failed("Lack store permit");
+                for (Map.Entry<String, PermitHandler> entry : permitHandlerMap.entrySet()) {
+                    PermitHandler handler = entry.getValue();
+                    boolean lackPermit = handler.lackPermit(annotation, arg);
+                    if (lackPermit) {
+                        return ResultData.denies("Lack permit of " + handler.name());
+                    }
                 }
             }
         }
-
+        // 校验合法，放行
         return joinPoint.proceed();
     }
 
@@ -64,12 +59,13 @@ public class PermitAspect {
         if (!(signature instanceof MethodSignature methodSignature)) {
             return null;
         }
-        Method method = methodSignature.getMethod();
 
         // 如果是代理对象，取真实方法
+        Method method = methodSignature.getMethod();
         if (method.getDeclaringClass().isInterface()) {
             try {
-                method = joinPoint.getTarget().getClass()
+                method = joinPoint.getTarget()
+                        .getClass()
                         .getDeclaredMethod(method.getName(), method.getParameterTypes());
             } catch (NoSuchMethodException e) {
                 return null;

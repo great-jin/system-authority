@@ -45,7 +45,8 @@ public class JwtUtils {
      * @param data 明文
      */
     public String create(String data) {
-        return getJwtBuilder(data, TimeUnit.HOURS.toMillis(2)).compact();
+        long millis = TimeUnit.MINUTES.toMillis(tokenProperties.getExpireMinutes());
+        return getJwtBuilder(data, millis).compact();
     }
 
     /**

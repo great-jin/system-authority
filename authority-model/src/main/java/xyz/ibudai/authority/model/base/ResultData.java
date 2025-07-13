@@ -24,6 +24,22 @@ public class ResultData<T> {
         return response;
     }
 
+    public static <T> ResultData<T> reject(String message) {
+        ResultData<T> response = new ResultData<>();
+        response.setCode(203);
+        response.setMessage(message);
+        response.setData(null);
+        return response;
+    }
+
+    public static <T> ResultData<T> denies(String message) {
+        ResultData<T> response = new ResultData<>();
+        response.setCode(403);
+        response.setMessage(message);
+        response.setData(null);
+        return response;
+    }
+
     public static <T> ResultData<T> failed(String message) {
         ResultData<T> response = new ResultData<>();
         response.setCode(500);

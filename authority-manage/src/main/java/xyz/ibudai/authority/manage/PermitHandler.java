@@ -1,12 +1,17 @@
 package xyz.ibudai.authority.manage;
 
+import java.lang.annotation.Annotation;
+
 public interface PermitHandler {
+
+    String name();
 
     /**
      * Has permit.
      *
-     * @param id the id
+     * @param annotation the annotation
+     * @param arg        the arg
      * @return the boolean
      */
-    boolean hasPermit(Long id);
+    boolean lackPermit(Annotation annotation, Object arg);
 }

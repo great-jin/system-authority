@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.ibudai.authority.biz.service.OrderService;
+import xyz.ibudai.authority.manage.annotation.OrderPermit;
 import xyz.ibudai.authority.model.base.ResultData;
 import xyz.ibudai.authority.model.entity.Order;
 
@@ -20,7 +21,7 @@ public class OrderResource {
 
     @GetMapping("{orderId}")
     @PreAuthorize("@pm.hasPermit('order.query')")
-    public ResultData<Order> query(@PathVariable String orderId) {
+    public ResultData<Order> query(@OrderPermit @PathVariable String orderId) {
         Order order = orderService.lambdaQuery()
                 .eq(Order::getOrderId, orderId)
                 .one();

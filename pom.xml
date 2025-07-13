@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>xyz.ibudai</groupId>
+    <artifactId>system-authority</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <modules>
+        <module>authority-bom</module>
+        <module>authority-parent</module>
+        <module>authority-common</module>
+        <module>authority-model</module>
+        <module>authority-biz</module>
+        <module>authority-manage</module>
+        <module>authority-core</module>
+        <module>authority-web</module>
+    </modules>
+</project>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.ibudai.authority.biz.dao.UserStoreDao">
+
+    <resultMap type="xyz.ibudai.authority.model.entity.UserStore" id="baseMap">
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="storeId" column="store_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+</mapper>
+

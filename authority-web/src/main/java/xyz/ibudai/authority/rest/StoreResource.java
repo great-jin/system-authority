@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.ibudai.authority.biz.service.StoreService;
+import xyz.ibudai.authority.manage.annotation.StorePermit;
 import xyz.ibudai.authority.model.base.ResultData;
 import xyz.ibudai.authority.model.entity.Order;
 import xyz.ibudai.authority.model.entity.Store;
@@ -21,7 +22,7 @@ public class StoreResource {
 
     @GetMapping("{storeId}")
     @PreAuthorize("@pm.hasPermit('store.query')")
-    public ResultData<Store> query(@PathVariable String storeId) {
+    public ResultData<Store> query(@StorePermit @PathVariable String storeId) {
         Store store = storeService.lambdaQuery()
                 .eq(Store::getStoreId, storeId)
                 .one();

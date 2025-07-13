@@ -17,6 +17,8 @@ public class Order {
 
     private Long orderId;
 
+    private Long storeId;
+
     private String productName;
 
     private LocalDateTime orderTime;

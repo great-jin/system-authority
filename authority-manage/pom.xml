@@ -19,5 +19,10 @@
             <artifactId>authority-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>xyz.ibudai</groupId>
+            <artifactId>authority-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

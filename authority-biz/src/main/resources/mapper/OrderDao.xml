@@ -4,6 +4,7 @@
 
     <resultMap type="xyz.ibudai.authority.model.entity.Order" id="baseMap">
         <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+        <result property="storeId" column="store_id" jdbcType="BIGINT"/>
         <result property="productName" column="product_name" jdbcType="VARCHAR"/>
         <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
     </resultMap>

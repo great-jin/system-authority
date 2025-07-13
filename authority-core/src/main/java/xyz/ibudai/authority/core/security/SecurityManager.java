@@ -1,15 +1,23 @@
 package xyz.ibudai.authority.core.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import xyz.ibudai.authority.model.dto.UserDTO;
 
+@Slf4j
 public class SecurityManager {
 
     public static Long getUserId() {
-        UserDTO user = (UserDTO) getAuthentication().getPrincipal();
-        return user.getUserId();
+        Long userId = null;
+        try {
+            UserDTO user = (UserDTO) getAuthentication().getPrincipal();
+            userId = user.getUserId();
+        } catch (Exception e) {
+            log.error("Not found user, message: {}", e.getMessage());
+        }
+        return userId;
     }
 
     /**

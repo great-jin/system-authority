@@ -9,9 +9,10 @@ CREATE TABLE `tb_store`
 -- auth_system.tb_order definition
 CREATE TABLE `tb_order`
 (
-    `order_id`     bigint(20) NOT NULL AUTO_INCREMENT,
+    `order_id`   bigint(20) NOT NULL AUTO_INCREMENT,
+    `store_id`   bigint(20) DEFAULT NULL
     `product_name` varchar(100) DEFAULT NULL,
-    `order_time`   datetime     DEFAULT NULL,
+    `order_time` datetime DEFAULT NULL,
     PRIMARY KEY (`order_id`)
 );
 

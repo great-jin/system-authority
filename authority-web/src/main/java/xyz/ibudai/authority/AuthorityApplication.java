@@ -9,7 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @MapperScan("xyz.ibudai.authority.biz.dao")
 @SpringBootApplication(scanBasePackages = {
         "xyz.ibudai.authority",
-        "xyz.ibudai.authority.core"
+        "xyz.ibudai.authority.core",
+        "xyz.ibudai.authority.manage"
 })
 public class AuthorityApplication {
 

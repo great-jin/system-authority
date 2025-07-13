@@ -29,7 +29,7 @@ public class PermitManager {
      * @return the boolean
      */
     public boolean hasPermit(String permit) {
-        Long userId = this.getUserId();
+        Long userId = SecurityManager.getUserId();
         if (Objects.isNull(userId)) {
             return false;
         }
@@ -50,7 +50,7 @@ public class PermitManager {
      * @return the boolean
      */
     public boolean hasAnyPermit(String permit) {
-        Long userId = this.getUserId();
+        Long userId = SecurityManager.getUserId();
         if (Objects.isNull(userId)) {
             return false;
         }
@@ -68,16 +68,5 @@ public class PermitManager {
             }
         }
         return false;
-    }
-
-
-    private Long getUserId() {
-        Long userId = null;
-        try {
-            userId = SecurityManager.getUserId();
-        } catch (Exception e) {
-            log.error("Not found user, message: {}", e.getMessage());
-        }
-        return userId;
     }
 }

@@ -1,6 +1,8 @@
 package xyz.ibudai.authority.common.cache;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import xyz.ibudai.authority.common.enums.CacheOperate;
 
 import java.util.*;
@@ -10,7 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * 系统角色店铺缓存
  */
 @Component
+@RequiredArgsConstructor
 public class StoreCache extends BaseCache<Long, Long> {
+
+    private final UserRoleCache userRoleCache;
+
 
     /**
      * Key:     角色ID
@@ -20,12 +26,27 @@ public class StoreCache extends BaseCache<Long, Long> {
 
 
     /**
+     * 查询用户店铺
+     *
+     * @param userId 用户ID
+     * @return 店铺集合
+     */
+    public Set<Long> readByUser(Long userId) {
+        Set<Long> roleIds = userRoleCache.read(userId);
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptySet();
+        }
+
+        return readByRole(roleIds);
+    }
+
+    /**
      * 查询角色店铺
      *
      * @param roleId 角色ID
      * @return 店铺集合
      */
-    public Set<Long> read(Long roleId) {
+    public Set<Long> readByRole(Long roleId) {
         return super.read(roleId, STORE_MAP);
     }
 
@@ -35,7 +56,7 @@ public class StoreCache extends BaseCache<Long, Long> {
      * @param roleIds 角色ID
      * @return 店铺集合
      */
-    public Set<Long> read(Set<Long> roleIds) {
+    public Set<Long> readByRole(Set<Long> roleIds) {
         return super.read(roleIds, STORE_MAP);
     }
 
